@@ -15,12 +15,12 @@
 
 <body class="shower list">
 	<header class="caption">
-		<h1>Routing in Express.js</h1>
+		<h1>Взаимодействие в реальном времени с Socket.io</h1>
 		<p>Konstantin Zolotarev</p>
 	</header>
 
 	<section class="slide" id="cover">
-		<h2>Роутинг в Express.js</h2>
+		<h2>Взаимодействие в реальном времени с Socket.io</h2>
 		<p>
 			<img src="images/avatar.png" alt="" class="avatar"> Konstantin Zolotarev <span class="position">Langa Inc.</span>
 		</p>
@@ -39,252 +39,178 @@
 	<section class="slide" id="roadmap">
 		<h2>План занятия</h2>
 		<ol>
-			<li><a href="#http">Протокол HTTP</a></li>
-			<li><a href="#express">Базовый роутинг в Express</a></li>
-			<li><a href="#create-route">Создание роутов</a></li>
-			<li><a href="#route-params">Параметры роутов</a></li>
+			<li><a href="#realtime">Real Time</a></li>
+			<li><a href="#protocol">Протокол WebSocket</a></li>
+			<li><a href="#transports">Варианты Real Time</a></li>
+			<li><a href="#server">Работа с сервером</a></li>
+			<li><a href="#client">Работа с клиентом</a></li>
 		</ol>
 	</section>
-
-	<section class="slide chapter" id="http">
-		<h2>Протокол HTTP</h2>
+	<section class="slide chapter" id="realtime">
+		<h2>Real Time</h2>
 	</section>
 	<section class="slide">
-		<h2>HTTP</h2>
-		<p>HTTP = HyperText Transfer Protocol</p>
-		<p>Основной протокол передачи данных в интернете</p>
-		<img src="images/http.png" alt="">
-	</section>
-	<section class="slide">
-		<h2>Основные части</h2>
-		<ul>
-			<li>URI (URL) - Uniform Resource Identifier</li>
-			<li>HTTP Method - GET/POST/PUT....</li>
-			<li>HTTP Status Code - Код состояния (200 OK / 404 Not Found)</li>
-		</ul>
-	</section>
-	<section class="slide">
-		<h2>URI / URL</h2>
-		<p>Адрес который мы набираем в браузере</p>
-		<ul>
-			<li>https://google.com</li>
-			<li>http://mail.google.com</li>
-			<li>http://something.com/images/image.png</li>
-			<li>https://ru.wikipedia.org/wiki/HTTP</li>
-			<li>https://expressjs.com/en/guide/routing.html</li>
-		</ul>
-
-	</section>
-	<section class="slide">
-		<h2>HTTP Method</h2>
-		<p>Последовательность из любых символов, указывающая на основную операцию над ресурсом <code>req.method</code></p>
-		<ul>
-			<li>GET</li>
-			<li>POST</li>
-			<li>PUT</li>
-			<li>DELETE</li>
-			<li>HEAD</li>
-			<li>PATCH</li>
-		</ul>
-	</section>
-	<section class="slide">
-		<h2>HTTP Status Code</h2>
-		<p>Код ответа сервера на запрошеную операцию</p>
-		<ul>
-			<li>200 OK, 404 Not Found, 418 I'm a teapot</li>
-			<li>Целое число из 3 цифр</li>
-			<li>Поясняющая фраза на английском языке</li>
-			<li>Первая цифра указывает на класс состояния</li>
-		</ul>
-	</section>
-	<section class="slide">
-		<h2>Request/Response</h2>
 		<p>
-			Express.js содержит 2 объекта <code>req</code> и <code>res</code>
-			Которые передаются в любой роут
+			Один из самых часто используемых вариантов Real Time - <b>Polling</b>
+			Polling основан на протоколе HTTP.
+			Это простые запросы с "задержкой" ответа
 		</p>
+		<img src="images/polling.png" alt="">
+	</section>
+	<section class="slide">
+		<h2>Проблемы Polling</h2>
 		<ul>
-			<li><code>req</code> - Request (данные запроса)</li>
-			<li><code>res</code> - Response (данные ответа)</li>
+			<li>Большие задержки</li>
+			<li>Большое кол-во соединений</li>
+			<li>"Шумовой" трафик</li>
 		</ul>
 	</section>
-	<section class="slide chapter" id="express">
-		<h2>Роутинг в Express.js</h2>
+	<section class="slide chapter" id="protocol">
+		<h2>Протокол WebSocket</h2>
 	</section>
 	<section class="slide">
-		<h2>Базовый пример</h2>
-		<pre>
-		<code class="language-javascript">
-	var express = require('express');
-	var app = express();
-	app.get('/', function (req, res) {
-	  res.send('Hello World!');
-	});
-	app.listen(3000, function () {
-	  console.log('Example app listening on port 3000!');
-	});
-		</code>
-	</pre>
+		<p>В отличие от HTTP - cоединение остается открытым</p>
+		<img src="images/websocket.png" alt="">
+	</section>
+	<section class="slide chapter" id="transports">
+		<h2>Варианты Real Time</h2>
 	</section>
 	<section class="slide">
-		<h2>Роут в Express</h2>
-		<p>Роут состоит из 3 частей</p>
 		<ul>
-			<li>Address - URI аддрес на который роут сработает</li>
-			<li>Middleware - Опциональная функция, которая будет вызвана до "контроллера"</li>
-			<li>Controller - Функция которая будет вызвана на данный URI</li>
+			<li>WebSocket</li>
+			<li>Adobe Flash Socket</li>
+			<li>Ajax Long Polling</li>
+			<li>JSONP polling</li>
+			<li>Ajax multipart streaming</li>
+			<li>Forever iframe</li>
+		</ul>
+	</section>
+	<section class="slide chapter" id="server">
+		<h2>Работа с сервером</h2>
+	</section>
+	<section class="slide">
+		<h2>Использование</h2>
+		<ul>
+			<li>Установить Socket.io</li>
+			<li>Запустить http сервер</li>
+			<li>Подключить Socket.io к http серверу</li>
 		</ul>
 	</section>
 	<section class="slide">
-		<pre>
-			<code class="language-javascript">
-	const address = '/hello'
-	const middleware = function (req, res, next) {
-		/* ... */
-		// next(new Error('Error !'))
-		<mark>next()</mark> // <-- обязательно вызвать !
-	}
-	const controller = function (req, res) { /* ... */ }
-	app.get(address, middleware, controller)
-			</code>
-		</pre>
-	</section>
-	<section class="slide chapter" id="create-route">
-		<h2>Создание роутов</h2>
-	</section>
-	<section class="slide">
-		<h2>Express routes</h2>
-		<pre>
-	      <code class="language-javascript">
-  app.all('/', function (req, res) { /* ... */});
-  app.get('/', function (req, res) { /* ... */});
-  app.post('/', function (req, res) { /* ... */});
-  app.put('/', function (req, res) { /* ... */});
-  app.delete('/', function (req, res) { /* ... */});
-	      </code>
-	    </pre>
-	</section>
-	<section class="slide">
-		<h2>Статические роуты</h2>
-		<p>Адрес: http://localhost:3000/hello</p>
-		<pre>
-			<code class="language-javascript">
-	app.all('/hello', function (req, res) { /* ... */})
-	app.get('/hello', function (req, res) { /* ... */})
-	app.post('/hello', function (req, res) { /* ... */})
-	app.put('/hello', function (req, res) { /* ... */})
-			</code>
-		</pre>
-	</section>
-	<section class="slide">
-		<h2>Wildcard route</h2>
-		<p>Адрес: http://localhost:3000/hello/any</p>
-		<pre>
-			<code class="language-javascript">
-	app.all('/hello/*', function (req, res) { /* ... */})
-	app.get('/hello/*', function (req, res) { /* ... */})
-	app.post('/hello/*', function (req, res) { /* ... */})
-	app.put('/hello/*', function (req, res) { /* ... */})
-			</code>
-		</pre>
-	</section>
-	<section class="slide">
-		<h2>Параметры роутинга</h2>
-		<p>Адрес: http://localhost:3000/hello/any</p>
-		<pre>
-			<code class="language-javascript">
-	app.get('/hello/:name', function (req, res) { /* ... */})
-	app.all('/hello/:name', function (req, res) {
-		console.log(req.<mark>params.name</mark>)
-	})
-			</code>
-		</pre>
-	</section>
-	<section class="slide">
-		<h2>Регулярные выражения</h2>
-		<p>Адрес: http://localhost:3000/hello/any</p>
-		<pre>
-			<code class="language-javascript">
-	app.get(/*.fly$/, function (req, res) { /* ... */})
-	app.all(/*.fly$/, function (req, res) {
-		console.log(req.<mark>params</mark>.name)
-	})
-			</code>
-		</pre>
-	</section>
-	<section class="slide">
-		<h2>GET параметры</h2>
-		<p>http://localhost:3000/hello?name=Konstantin</p>
-		<p><code>req.query</code></p>
-		<pre>
-			<code class="language-javascript">
-	app.get('/hello', function (req, res) {
-		console.log(req.<mark>query</mark>.name)
-	})
-			</code>
-		</pre>
-	</section>
-	<section class="slide">
-		<h2>POST параметры</h2>
-		<p>POST http://localhost:3000/hello</p>
+		<h2>Socket.io</h2>
 		<p>
+			Socket.io основан на стандартной библиотеке Node.js <mark>events</mark>
+			И использует класс <code>EventEmitter</code>
+		</p>
+	</section>
+	<section class="slide">
+		<pre>
+			<code class="language-javascript">
+	var app = require('express')();
+	var http = require('http').Server(app);
+	var io = require('socket.io')(http);
+
+	app.get('/', function(req, res){
+	  res.sendfile('index.html');
+	});
+
+	io.on('connection', function(socket){
+	  console.log('a user connected');
+	});
+
+	http.listen(3000, function(){
+	  console.log('listening on *:3000');
+	});
+			</code>
+		</pre>
+	</section>
+	<section class="slide">
+		<h2>Порядок работы</h2>
+		<ul>
+			<li>Socket handshake - используется для авторизации</li>
+			<li>Событие (event) <code>connection</code></li>
+			<li>Остальные события</li>
+			<li>Событие <code>dissconnect</code></li>
+		</ul>
+	</section>
+	<section class="slide">
+		<h2>Handshake</h2>
+		<p>С версии 1.0 используется механизм <mark>middleware</mark> как в Express.js</p>
+		<pre>
+			<code class="language-javascript">
+	io.use((socket, next) => {
+		/* ... */
+		next() // <-- если не вызвать, чуда не произойдет
+	})
+			</code>
+		</pre>
+	</section>
+	<section class="slide">
+		<p>
+			Дальше сработает событие <mark>connection</mark>.
+			Слушатель которого получит <code>socket</code> - объект сокета с подключившимся клиентом
+		</p>
+		<p>
+			Так как срабатывания всех событий - асинхронное, они могут вызываться с любой последовательности.
+			<mark>Отдельно</mark> для каждого клиента.
+		</p>
+	</section>
+	<section class="slide">
+		<h2>Получение сообщений</h2>
+		<p>
+			Все сообщения в сокетах будут получены как стандартные события класса <code>EventEmmiter</code>
+		</p>
+		<pre>
 			<code>
-		{ "name": "Konstantin" }
-			</code>
-		</p>
-		<pre>
-			<code class="language-javascript">
-	app.get('/hello', function (req, res) {
-		console.log(req.<mark>body</mark>.name)
-	})
+	socket.on('any-event', (data) => { /* ... */})
 			</code>
 		</pre>
 	</section>
 	<section class="slide">
-		<h2>Response</h2>
+		<h2>Системные сообщения</h2>
+		<ul>
+			<li><code>connection</code> - подключение нового пользователя</li>
+			<li><code>disconnect</code> - отключение <mark>конкретного</mark> пользователя</li>
+			<li><code>error</code> - ошибка системы</li>
+			<li><code>message</code> - получение любого сообщения</li>
+			<li><code>reconnect</code> - повторное подключение пользователя</li>
+		</ul>
+	</section>
+	<section class="slide">
+		<h2>Отправка сообщений</h2>
+		<ul>
+			<li><code>socket.emit</code> - отправка сообщения текущему пользователю</li>
+			<li><code>socket.broadcast.emit</code> - всем, кроме текущего пользователя</li>
+			<li><code>io.sockets.emit</code> - всем пользователям</li>
+			<li><code>io.to('room').emit</code> - в канал</li>
+		</ul>
+	</section>
+	<section class="slide">
+		<h2>Каналы (room/namespace)</h2>
 		<p>
-			Express.js предоставляет богатый API для ответов сервера.
-			Данный API будет содержаться в переменной <code>res</code> переданной в контроллер
+			Socket.io содержит систему каналов/комнат.
+			Возможность объединять пользователей по какому-либо принципу.
+		</p>
+		<p>
+			Очень часто используется в играх/чатах
 		</p>
 	</section>
 	<section class="slide">
-		<h2>Ответ сервера</h2>
-		<p>Основной ответ сервера в Express.js это <code>res.send('Some')</code></p>
 		<pre>
-			<code class="language-javascript">
-	app.get('/hello', function (req, res) {
-		/* ... */
-		res.send('Hello !')
-	})
+			<code>
+	// Подключаем пользователя в канал
+	socket.join('custom')
+	// Отправляем сообщение в канал
+	io.to('custom').emit('event', { data: 1 })
+	// Всем кроме текущего пользователя в канале
+	socket.broadcast.to('custom').emit('user-added', user)
 			</code>
 		</pre>
 	</section>
-	<section class="slide">
-		<h2>Установка статус кода (HTTP Status Code)</h2>
-		<pre>
-			<code class="language-javascript">
-	// equivalent to res.status(200).send('OK')
-	res.sendStatus(200);
-	// equivalent to res.status(403).send('Forbidden')
-	res.sendStatus(403);
-	res.sendStatus(404);
-	res.sendStatus(500);
-			</code>
-		</pre>
+	<section class="slide chapter" id="client">
+		<h2>Работа с клиентом</h2>
 	</section>
-	<section class="slide">
-		<h2>JSON/JSONP</h2>
-		<pre>
-			<code class="language-javascript">
-	res.json(null);
-	res.json({ user: 'tobi' });
-	res.jsonp(null); // => null
-	res.jsonp({ user: 'tobi' }); // => { "user": "tobi" }
-	res.status(500).jsonp({ error: 'message' });
-	// => { "error": "message" }
-			</code>
-		</pre>
-	</section>
+
 	<!--
 		To hide progress bar from entire presentation
 		just remove “progress” element.
