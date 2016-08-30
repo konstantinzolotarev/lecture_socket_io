@@ -204,11 +204,55 @@
 	io.to('custom').emit('event', { data: 1 })
 	// Всем кроме текущего пользователя в канале
 	socket.broadcast.to('custom').emit('user-added', user)
+	//Выходим из канала
+	socket.leave('custom')
 			</code>
 		</pre>
 	</section>
 	<section class="slide chapter" id="client">
 		<h2>Работа с клиентом</h2>
+	</section>
+	<section class="slide">
+		<h2>Библиотека Socket.io</h2>
+		<p>
+			При создании сервера, Socket.io автоматически создаст путь <mark>socket.io/socket.io.js</mark>
+			И привяжет его к клиентской библиотеке Socket.io
+		</p>
+		<pre>
+			<code>
+	<script src="socket.io/socket.io.js"></script>
+			</code>
+		</pre>
+	</section>
+	<section class="slide">
+		<pre>
+			<code>
+	// Подключаемся
+	var socket = io();
+	socket.on('connect', function(){ /* ... */ });
+	socket.on('message', function(msg){ /* ... */ });
+	socket.on('disconnect', function() { /* ... * / });
+
+	socket.send('Hello world!'); // send a message to server
+	socket.disconnect(); // Closes the connection
+			</code>
+		</pre>
+	</section>
+	<section class="slide">
+		<h2>Системные сообщения</h2>
+		<ul>
+			<li><code>connect</code> - подключение</li>
+			<li><code>disconnect</code> - отключение</li>
+			<li><code>error</code> - ошибка системы</li>
+			<li><code>reconnect</code> - повторное подключение пользователя</li>
+		</ul>
+	</section>
+	<section class="slide">
+		<h2>Отправка сообщений</h2>
+		<ul>
+			<li><code>socket.emit</code> - отправка сообщения текущему пользователю</li>
+			<li><code>socket.broadcast.emit</code> - всем, кроме текущего пользователя</li>
+		</ul>
 	</section>
 
 	<!--
