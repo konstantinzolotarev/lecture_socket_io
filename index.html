@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<title>Shower Presentation Engine</title>
+	<meta charset="utf-8">
+	<meta http-equiv="x-ua-compatible" content="ie=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="assets/screen-16x10.css">
+	<link rel="stylesheet" href="assets/netology.css">
+
+	<!-- Подключить иконочный шрифт если нужны иконки в презентации -->
+	<script src="https://use.fontawesome.com/30b5a52164.js"></script>
+</head>
+
+<body class="shower list">
+	<header class="caption">
+		<h1>Routing in Express.js</h1>
+		<p>Konstantin Zolotarev</p>
+	</header>
+
+	<section class="slide" id="cover">
+		<h2>Роутинг в Express.js</h2>
+		<p>
+			<img src="images/avatar.png" alt="" class="avatar"> Konstantin Zolotarev <span class="position">Langa Inc.</span>
+		</p>
+	</section>
+	<section class="slide author" id="author">
+		<img src="images/avatar.png" alt="">
+		<h1>Konstantin Zolotarev</h1>
+		<p class="position">Langa Inc</p>
+		<ul class="contacts">
+			<li><a href="mailto:konstantin.zolotarev.work@gmail.com"><i class="fa fa-envelope-o" aria-hidden="true"></i>konstantin.zolotarev.work@gmail.com</a></li>
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			<li><a href="skype:konstantin.zolotarev?call"><i class="fa fa-skype" aria-hidden="true"></i>konstantin.zolotarev</a></li>
+		</ul>
+	</section>
+
+	<section class="slide" id="roadmap">
+		<h2>План занятия</h2>
+		<ol>
+			<li><a href="#http">Протокол HTTP</a></li>
+			<li><a href="#express">Базовый роутинг в Express</a></li>
+			<li><a href="#create-route">Создание роутов</a></li>
+			<li><a href="#route-params">Параметры роутов</a></li>
+		</ol>
+	</section>
+
+	<section class="slide chapter" id="http">
+		<h2>Протокол HTTP</h2>
+	</section>
+	<section class="slide">
+		<h2>HTTP</h2>
+		<p>HTTP = HyperText Transfer Protocol</p>
+		<p>Основной протокол передачи данных в интернете</p>
+		<img src="images/http.png" alt="">
+	</section>
+	<section class="slide">
+		<h2>Основные части</h2>
+		<ul>
+			<li>URI (URL) - Uniform Resource Identifier</li>
+			<li>HTTP Method - GET/POST/PUT....</li>
+			<li>HTTP Status Code - Код состояния (200 OK / 404 Not Found)</li>
+		</ul>
+	</section>
+	<section class="slide">
+		<h2>URI / URL</h2>
+		<p>Адрес который мы набираем в браузере</p>
+		<ul>
+			<li>https://google.com</li>
+			<li>http://mail.google.com</li>
+			<li>http://something.com/images/image.png</li>
+			<li>https://ru.wikipedia.org/wiki/HTTP</li>
+			<li>https://expressjs.com/en/guide/routing.html</li>
+		</ul>
+
+	</section>
+	<section class="slide">
+		<h2>HTTP Method</h2>
+		<p>Последовательность из любых символов, указывающая на основную операцию над ресурсом <code>req.method</code></p>
+		<ul>
+			<li>GET</li>
+			<li>POST</li>
+			<li>PUT</li>
+			<li>DELETE</li>
+			<li>HEAD</li>
+			<li>PATCH</li>
+		</ul>
+	</section>
+	<section class="slide">
+		<h2>HTTP Status Code</h2>
+		<p>Код ответа сервера на запрошеную операцию</p>
+		<ul>
+			<li>200 OK, 404 Not Found, 418 I'm a teapot</li>
+			<li>Целое число из 3 цифр</li>
+			<li>Поясняющая фраза на английском языке</li>
+			<li>Первая цифра указывает на класс состояния</li>
+		</ul>
+	</section>
+	<section class="slide">
+		<h2>Request/Response</h2>
+		<p>
+			Express.js содержит 2 объекта <code>req</code> и <code>res</code>
+			Которые передаются в любой роут
+		</p>
+		<ul>
+			<li><code>req</code> - Request (данные запроса)</li>
+			<li><code>res</code> - Response (данные ответа)</li>
+		</ul>
+	</section>
+	<section class="slide chapter" id="express">
+		<h2>Роутинг в Express.js</h2>
+	</section>
+	<section class="slide">
+		<h2>Базовый пример</h2>
+		<pre>
+		<code class="language-javascript">
+	var express = require('express');
+	var app = express();
+	app.get('/', function (req, res) {
+	  res.send('Hello World!');
+	});
+	app.listen(3000, function () {
+	  console.log('Example app listening on port 3000!');
+	});
+		</code>
+	</pre>
+	</section>
+	<section class="slide">
+		<h2>Роут в Express</h2>
+		<p>Роут состоит из 3 частей</p>
+		<ul>
+			<li>Address - URI аддрес на который роут сработает</li>
+			<li>Middleware - Опциональная функция, которая будет вызвана до "контроллера"</li>
+			<li>Controller - Функция которая будет вызвана на данный URI</li>
+		</ul>
+	</section>
+	<section class="slide">
+		<pre>
+			<code class="language-javascript">
+	const address = '/hello'
+	const middleware = function (req, res, next) {
+		/* ... */
+		// next(new Error('Error !'))
+		<mark>next()</mark> // <-- обязательно вызвать !
+	}
+	const controller = function (req, res) { /* ... */ }
+	app.get(address, middleware, controller)
+			</code>
+		</pre>
+	</section>
+	<section class="slide chapter" id="create-route">
+		<h2>Создание роутов</h2>
+	</section>
+	<section class="slide">
+		<h2>Express routes</h2>
+		<pre>
+	      <code class="language-javascript">
+  app.all('/', function (req, res) { /* ... */});
+  app.get('/', function (req, res) { /* ... */});
+  app.post('/', function (req, res) { /* ... */});
+  app.put('/', function (req, res) { /* ... */});
+  app.delete('/', function (req, res) { /* ... */});
+	      </code>
+	    </pre>
+	</section>
+	<section class="slide">
+		<h2>Статические роуты</h2>
+		<p>Адрес: http://localhost:3000/hello</p>
+		<pre>
+			<code class="language-javascript">
+	app.all('/hello', function (req, res) { /* ... */})
+	app.get('/hello', function (req, res) { /* ... */})
+	app.post('/hello', function (req, res) { /* ... */})
+	app.put('/hello', function (req, res) { /* ... */})
+			</code>
+		</pre>
+	</section>
+	<section class="slide">
+		<h2>Wildcard route</h2>
+		<p>Адрес: http://localhost:3000/hello/any</p>
+		<pre>
+			<code class="language-javascript">
+	app.all('/hello/*', function (req, res) { /* ... */})
+	app.get('/hello/*', function (req, res) { /* ... */})
+	app.post('/hello/*', function (req, res) { /* ... */})
+	app.put('/hello/*', function (req, res) { /* ... */})
+			</code>
+		</pre>
+	</section>
+	<section class="slide">
+		<h2>Параметры роутинга</h2>
+		<p>Адрес: http://localhost:3000/hello/any</p>
+		<pre>
+			<code class="language-javascript">
+	app.get('/hello/:name', function (req, res) { /* ... */})
+	app.all('/hello/:name', function (req, res) {
+		console.log(req.<mark>params.name</mark>)
+	})
+			</code>
+		</pre>
+	</section>
+	<section class="slide">
+		<h2>Регулярные выражения</h2>
+		<p>Адрес: http://localhost:3000/hello/any</p>
+		<pre>
+			<code class="language-javascript">
+	app.get(/*.fly$/, function (req, res) { /* ... */})
+	app.all(/*.fly$/, function (req, res) {
+		console.log(req.<mark>params</mark>.name)
+	})
+			</code>
+		</pre>
+	</section>
+	<section class="slide">
+		<h2>GET параметры</h2>
+		<p>http://localhost:3000/hello?name=Konstantin</p>
+		<p><code>req.query</code></p>
+		<pre>
+			<code class="language-javascript">
+	app.get('/hello', function (req, res) {
+		console.log(req.<mark>query</mark>.name)
+	})
+			</code>
+		</pre>
+	</section>
+	<section class="slide">
+		<h2>POST параметры</h2>
+		<p>POST http://localhost:3000/hello</p>
+		<p>
+			<code>
+		{ "name": "Konstantin" }
+			</code>
+		</p>
+		<pre>
+			<code class="language-javascript">
+	app.get('/hello', function (req, res) {
+		console.log(req.<mark>body</mark>.name)
+	})
+			</code>
+		</pre>
+	</section>
+	<section class="slide">
+		<h2>Response</h2>
+		<p>
+			Express.js предоставляет богатый API для ответов сервера.
+			Данный API будет содержаться в переменной <code>res</code> переданной в контроллер
+		</p>
+	</section>
+	<section class="slide">
+		<h2>Ответ сервера</h2>
+		<p>Основной ответ сервера в Express.js это <code>res.send('Some')</code></p>
+		<pre>
+			<code class="language-javascript">
+	app.get('/hello', function (req, res) {
+		/* ... */
+		res.send('Hello !')
+	})
+			</code>
+		</pre>
+	</section>
+	<section class="slide">
+		<h2>Установка статус кода (HTTP Status Code)</h2>
+		<pre>
+			<code class="language-javascript">
+	// equivalent to res.status(200).send('OK')
+	res.sendStatus(200);
+	// equivalent to res.status(403).send('Forbidden')
+	res.sendStatus(403);
+	res.sendStatus(404);
+	res.sendStatus(500);
+			</code>
+		</pre>
+	</section>
+	<section class="slide">
+		<h2>JSON/JSONP</h2>
+		<pre>
+			<code class="language-javascript">
+	res.json(null);
+	res.json({ user: 'tobi' });
+	res.jsonp(null); // => null
+	res.jsonp({ user: 'tobi' }); // => { "user": "tobi" }
+	res.status(500).jsonp({ error: 'message' });
+	// => { "error": "message" }
+			</code>
+		</pre>
+	</section>
+	<!--
+		To hide progress bar from entire presentation
+		just remove “progress” element.
+		-->
+	<div class="progress"></div>
+	<script src="node_modules/shower-core/shower.min.js"></script>
+	<!-- Copyright © 2015 Yours Truly, Famous Inc. -->
+	<!-- Photos by John Carey, fiftyfootshadows.net -->
+</body>
+
+</html>
